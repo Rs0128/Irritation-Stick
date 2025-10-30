@@ -1,0 +1,41 @@
+using UnityEngine;
+
+public class AudioManager : MonoBehaviour
+{
+    public static AudioManager Instance;
+
+    [Header("å¯â âπàÍóó")]
+    public AudioClip buttonSE;
+    public AudioClip moveSE;
+    public AudioClip countdownSE;
+    public AudioClip wallHitSE;
+
+    private AudioSource audioSource;
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        audioSource = GetComponent<AudioSource>();
+    }
+
+    /// <summary>
+    /// å¯â âπÇ1âÒçƒê∂
+    /// </summary>
+    public void PlaySE(AudioClip clip)
+    {
+        if (clip != null)
+        {
+            audioSource.PlayOneShot(clip);
+        }
+    }
+}

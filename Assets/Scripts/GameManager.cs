@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// カウントダウン表示 → プレイヤー開始
+    /// カウントダウン表示 → 「GO!」 → プレイヤー開始
     /// </summary>
     private IEnumerator CountdownRoutine()
     {
@@ -36,15 +36,20 @@ public class GameManager : MonoBehaviour
         while (count > 0)
         {
             countdownText.text = count.ToString();
+            AudioManager.Instance.PlaySE(AudioManager.Instance.countdownSE);
             yield return new WaitForSeconds(1);
             count--;
         }
 
+        // "GO!"を表示して1秒間キープ
         countdownText.text = GO_TEXT;
+        AudioManager.Instance.PlaySE(AudioManager.Instance.countdownSE);
+
         yield return new WaitForSeconds(1);
 
         countdownText.enabled = false;
 
+        // プレイヤー開始
         player.StartMove();
     }
 }

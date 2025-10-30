@@ -54,24 +54,22 @@ public class PlayerController : MonoBehaviour
     {
         if (!isPlaying) return;
 
-        // 十字キー入力取得
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Vertical");
+        Vector2 prevDirection = moveDirection;
 
-        // 斜め移動禁止（優先順位：横入力 → 縦入力）
-        if (horizontal != 0 && vertical != 0)
-        {
-            vertical = 0;
-        }
+        // 横移動
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+            moveDirection = Vector2.right;
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+            moveDirection = Vector2.left;
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+            moveDirection = Vector2.up;
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+            moveDirection = Vector2.down;
 
-        // 横 → 縦の順に判定
-        if (horizontal != 0)
+        // 方向が変わったときだけ効果音再生
+        if (moveDirection != prevDirection)
         {
-            moveDirection = new Vector2(horizontal, 0).normalized;
-        }
-        else if (vertical != 0)
-        {
-            moveDirection = new Vector2(0, vertical).normalized;
+            AudioManager.Instance.PlaySE(AudioManager.Instance.moveSE);
         }
     }
 
@@ -95,6 +93,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.CompareTag("Wall"))
         {
+            AudioManager.Instance.PlaySE(AudioManager.Instance.wallHitSE);
             SceneController.LoadGameOver();
         }
     }
